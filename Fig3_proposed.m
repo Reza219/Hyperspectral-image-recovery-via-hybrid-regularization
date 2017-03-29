@@ -2,15 +2,52 @@
 
 clear
 addpath('Function')
-load('.\DC.mat')
-load('.\randsDC.mat')
+dataset='DC'; %'IP'; 'HI'; 'HO'; 'SD'; 'SF';
+
+switch dataset
+    case 'DC'
+        load('.\DC.mat')
+        load('.\randsDC.mat')
+        gam1=.002;            %regularization parameter
+        gam2=.004;            %regularization parameter
+        
+    case 'IP'
+        load('.\IndianPines.mat')
+        load('.\randsIP.mat')
+        gam1=.001;
+        gam2=.002;
+        
+    case 'HI'
+        load('.\Harvard_i3.mat')
+        load('.\randsHarv.mat')
+        gam1=.001;
+        gam2=.004;
+        
+    case 'HO'
+        load('.\Harvard_oc4.mat')
+        load('.\randsHarv.mat')
+        gam1=.001;
+        gam2=.004;
+        
+    case 'SD'
+        load('.\StanfordDish.mat')
+        load('.\randsStan.mat')
+        gam1=.0002;
+        gam2=.002;
+        
+    case 'SF'
+        load('.\SanFrancisco.mat')
+        load('.\randsStan.mat')
+        gam1=.0002;
+        gam2=.002;
+end
 
 Im=Im';
 [L,~,~]=svd(Im(:,1:100:end),'econ');
 
 % problem size
 rp=.2;%.5;                    %spatial measurement ratio
-rs=.1;%.2;                    %spectral measurement ratio
+rs=.1;%.2;1;                  %spectral measurement ratio
 Mp=round(rp*Np);
 Ms=round(rs*Ns);
 Mp1=round(.1*Np);
@@ -40,10 +77,8 @@ As= @(Z,mode)hybrid(Z,Als,Ars,Ms1,Ms,mode);
 Y=Ap(As(Im,1)',1)'+N(1:Ms,1:Mp);
 
 % paramaters
-ni=107;%91;                   %no. of iterations
 lam=.25;                      %step-size
-gam1=.002;                    %regularization parameter
-gam2=.004;                    %regularization parameter
+ni=200;                       %no. of iterations
 
 % initialization
 X=Ap(As(Y,2)',2)';
