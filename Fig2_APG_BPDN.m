@@ -2,19 +2,50 @@
 
 clear
 addpath('Function')
-load('.\DC.mat')
-load('.\randsDC.mat')
+
+dataset='DC'; %'IP'; 'HI'; 'HO'; 'SD'; 'SF';
+
+switch dataset
+    case 'DC'
+        load('.\DC.mat')
+        load('.\randsDC.mat')
+        gam=.05;              %regularization parameter
+        
+    case 'IP'
+        load('.\IndianPines.mat')
+        load('.\randsIP.mat')
+        gam=.15;
+        
+    case 'HI'
+        load('.\Harvard_i3.mat')
+        load('.\randsHarv.mat')
+        gam=.3;
+        
+    case 'HO'
+        load('.\Harvard_oc4.mat')
+        load('.\randsHarv.mat')
+        gam=.3;
+        
+    case 'SD'
+        load('.\StanfordDish.mat')
+        load('.\randsStan.mat')
+        gam=1;
+        
+    case 'SF'
+        load('.\SanFrancisco.mat')
+        load('.\randsStan.mat')
+        gam=1;
+end
 
 Im=Im';
 [L,~,~]=svd(Im(:,1:100:end),'econ');
 [~,s,~]=jpgzzind(np,np);
 
 %paramaters
-lam=.25;                 %step-size
-gam=.05;                 %regularization parameter
-ni=200;                  %no. of iterations
-rp=.1:.1:1;              %spatial measurement ratio
-rs=[.1,.2,.5,1];         %spectral measurement ratio
+lam=.25;                      %step-size
+ni=200;                       %no. of iterations
+rp=.1:.1:1;                   %spatial measurement ratio
+rs=[.1,.2,.5,1];              %spectral measurement ratio
 mss=mean((Im(:)).^2);
 
 figure
